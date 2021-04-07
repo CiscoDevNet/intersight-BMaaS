@@ -1,0 +1,10 @@
+﻿OsImageName,WindowsEdition,ScuImageName,ConfigurationSource,ConfigurationFileName,InstallMethod,InstalledTargetType
+Windows2019,Standard,SCU 6.1.2d,Custom,win201911_DC_PH.xml,vMedia,MRAID VD
+SerialNumber,InstallTarget,IpAddress,Netmask,Gateway,secure.Password
+XXXXXXXXX1,,10.10.10.1,255.255.255.0,10.10.10.1,Password@123
+XXXXXXXXX2,,10.10.10.2,255.255.255.0,10.10.10.1,Password@123
+XXXXXXXXX3,,10.10.10.3,255.255.255.0,10.10.10.1,Password@123
+XXXXXXXXX4,,10.10.10.4,255.255.255.0,10.10.10.1,Password@123
+XXXXXXXXX5,,10.10.10.5,255.255.255.0,10.10.10.1,Password@123
+XXXXXXXXX6,MRAID:0,10.10.10.6,255.255.255.0,10.10.10.1,Password@123
+XXXXXXXXX7,MRAID:0,10.10.10.7,255.255.255.0,10.10.10.1,Password@123

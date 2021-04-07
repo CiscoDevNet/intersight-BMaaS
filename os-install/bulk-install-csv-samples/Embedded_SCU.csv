@@ -1,0 +1,10 @@
+﻿OsImageName,WindowsEdition,ScuImageName,ConfigurationSource,InstallMethod,InstalledTargetType
+Windows2019,Standard,SCU 6.1.2d,Embedded,vMedia,MRAID VD
+SerialNumber,InstallTarget
+XXXXXXXXX1,MRAID:0
+XXXXXXXXX2,MRAID:0
+XXXXXXXXX3,MRAID:0
+XXXXXXXXX4,MRAID:0
+XXXXXXXXX5,MRAID:0
+XXXXXXXXX6,MRAID:0
+XXXXXXXXX7,MRAID:0

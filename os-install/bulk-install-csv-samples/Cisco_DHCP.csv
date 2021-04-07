@@ -1,0 +1,10 @@
+OsImageName,ScuImageName,ConfigurationSource,InstallMethod,InstallTargetType
+esxi70,scu612d,Cisco,vMedia,MRAID VD
+SerialNumber,InstallTarget,IpConfigType,HostName,Password,IsPasswordEnCrypted,IpConfigurationType
+XXXXXXXXX1,,DHCP,EsxiHost1,Password@12345,FALSE,IpV6
+XXXXXXXXX2,,DHCP,EsxiHost2,Password@12345,FALSE,IpV6
+XXXXXXXXX3,,DHCP,EsxiHost3,Password@12345,FALSE,IpV6
+XXXXXXXXX4,,DHCP,EsxiHost4,Password@12345,FALSE,IpV6
+XXXXXXXXX5,,DHCP,EsxiHost5,Password@12345,FALSE,IpV6
+XXXXXXXXX6,,DHCP,EsxiHost6,Password@12345,FALSE,IpV6
+XXXXXXXXX7,,DHCP,EsxiHost7,Password@12345,FALSE,IpV6
