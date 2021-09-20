@@ -16,7 +16,7 @@
 <InstallFrom>
 <MetaData wcm:action="add">
 <Key>/IMAGE/NAME</Key>
-<Value>Windows Server 2019 SERVERDATACENTER</Value>
+<Value>Hyper-V Server 2019 SERVERHYPERCORE</Value>
 </MetaData>
 </InstallFrom>
 <InstallTo>
@@ -28,10 +28,6 @@
 </OSImage>
 </ImageInstall>
 <UserData>
-<ProductKey>
-<Key>*****</Key>
-<WillShowUI>OnError</WillShowUI>
-</ProductKey>
 <AcceptEula>true</AcceptEula>
 </UserData>
 <EnableFirewall>true</EnableFirewall>
@@ -61,7 +57,10 @@
 <component name="Microsoft-Windows-SQMApi" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 <CEIPEnabled>0</CEIPEnabled>
 </component>
-<component name="Microsoft-Windows-TCPIP" processorArchitecture="wow64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<component name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<ComputerName>{{ .HostName }}</ComputerName>
+</component>
+<component name="Microsoft-Windows-TCPIP" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 <Interfaces>
 <Interface wcm:action="add">
 <Identifier>LOM Port 1</Identifier>
@@ -71,13 +70,13 @@
 <RouterDiscoveryEnabled>false</RouterDiscoveryEnabled>
 </Ipv4Settings>
 <UnicastIpAddresses>
-<IpAddress wcm:action="add" wcm:keyValue="1">10.105.218.174/24</IpAddress>
+<IpAddress wcm:action="add" wcm:keyValue="1">{{ .IpAddress }}/{{ .Prefix }}</IpAddress>
 </UnicastIpAddresses>
 <Routes>
 <Route wcm:action="add">
 <Identifier>0</Identifier>
 <Metric>20</Metric>
-<NextHopAddress>10.105.218.1</NextHopAddress>
+<NextHopAddress>{{ .Gateway }}</NextHopAddress>
 <Prefix>0.0.0.0/0</Prefix>
 </Route>
 </Routes>
@@ -89,12 +88,24 @@
 <PrivateProfile_EnableFirewall>false</PrivateProfile_EnableFirewall>
 <PublicProfile_EnableFirewall>false</PublicProfile_EnableFirewall>
 </component>
+<component name="Microsoft-Windows-DNS-Client" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<Interfaces>
+<Interface wcm:action="add">
+<Identifier>LOM Port 1</Identifier>
+<DNSServerSearchOrder>
+<IpAddress wcm:action="add" wcm:keyValue="1">{{ .NameServer }}</IpAddress>
+</DNSServerSearchOrder>
+<EnableAdapterDomainNameRegistration>true</EnableAdapterDomainNameRegistration>
+<DisableDynamicUpdate>false</DisableDynamicUpdate>
+</Interface>
+</Interfaces>
+</component>
 </settings>
 <settings pass="oobeSystem">
 <component name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 <AutoLogon>
 <Password>
-<Value>password123</Value>
+<Value>{{ .secure.Password }}</Value>
 <PlainText>true</PlainText>
 </Password>
 <Enabled>true</Enabled>
@@ -114,12 +125,12 @@
 </OOBE>
 <UserAccounts>
 <AdministratorPassword>
-<Value>password123</Value>
+<Value>{{ .secure.Password }}</Value>
 <PlainText>true</PlainText>
 </AdministratorPassword>
 </UserAccounts>
 <DisableAutoDaylightTimeSet>false</DisableAutoDaylightTimeSet>
 </component>
 </settings>
-<cpi:offlineImage cpi:source="wim:c:/users/administrator/desktop/install.wim#Windows Server 2019 SERVERDATACENTER" xmlns:cpi="urn:schemas-microsoft-com:cpi" />
+<cpi:offlineImage cpi:source="wim:c:/users/administrator/desktop/install.wim#Hyper-V Server 2019 SERVERHYPERCORE" xmlns:cpi="urn:schemas-microsoft-com:cpi" />
 </unattend>

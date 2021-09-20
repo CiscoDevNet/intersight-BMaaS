@@ -2,14 +2,14 @@
 vmaccepteula
 
 # Set the root password for the DCUI and Tech Support Mode
-rootpw --iscrypted $6$Q8pK40IBYg5YqQik$tPhTqVeL2paHjkKuL9.gzJcKnkb9ts7.IYylnJ58PbJmPtx4V/2YZ5QiEnE3Ii3RXcQS3BJ2
+rootpw {{ .secure.Password }}
 
 #for Local boot
 DISKIDPLACEHOLDER
 
 # Set the network to use a static IP on the first network adapter
 
-network --bootproto=static --ip=20.20.20.6 --netmask=255.255.255.0 --gateway=20.20.20.1 --hostname=myhost --nameserver=20.20.20.7
+network --bootproto=static --ip={{ .IpAddress }} --netmask={{ .NetMask }} --gateway={{ .GateWay }} --hostname={{ .HostName }} --nameserver=={{ .NameServer }}
 
 %pre --interpreter=busybox
 hwclock -d %LIVE_VAR_DATE_1% -t %LIVE_VAR_TIME_UTC_1%
@@ -37,7 +37,7 @@ vim-cmd hostsvc/start_ssh
 vim-cmd hostsvc/enable_esx_shell
 vim-cmd hostsvc/start_esx_shell
 
-esxcli system hostname set --host=dff
+esxcli system hostname set --host={{ .HostName }}
 
 %post --interpreter=busybox --ignorefailure=true
 
