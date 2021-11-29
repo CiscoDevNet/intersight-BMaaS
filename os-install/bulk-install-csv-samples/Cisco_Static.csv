@@ -1,10 +1,10 @@
 OsImageName,ScuImageName,ConfigurationSource,InstallMethod,InstallTargetType
 esxi70,scu612d,Cisco,vMedia,MRAID VD
-SerialNumber,InstallTarget,IpConfigType,IpAddress,NetMask/Prefix,Gateway,NameServer,HostName,IpConfigurationType,Password,IsPasswordEnCrypted
-XXXXXXXXX1,,Static,10.10.10.10,255.255.255.0,10.10.10.1,10.10.10.4,EsxiHost1,IpV4,Password@12345,FALSE
-XXXXXXXXX2,,Static,10.10.10.11,255.255.255.0,10.10.10.1,10.10.10.4,EsxiHost2,IpV4,Password@12345,FALSE
-XXXXXXXXX3,,Static,10.10.10.12,255.255.255.0,10.10.10.1,10.10.10.4,EsxiHost3,IpV4,Password@12345,FALSE
-XXXXXXXXX4,,Static,10.10.10.13,255.255.255.0,10.10.10.1,10.10.10.4,EsxiHost4,IpV4,Password@12345,FALSE
-XXXXXXXXX5,,Static,10.10.10.14,255.255.255.0,10.10.10.1,10.10.10.4,EsxiHost5,IpV4,Password@12345,FALSE
-XXXXXXXXX6,,Static,10.10.10.15,255.255.255.0,10.10.10.1,10.10.10.4,EsxiHost6,IpV4,Password@12345,FALSE
-XXXXXXXXX7,,Static,10.10.10.16,255.255.255.0,10.10.10.1,10.10.10.4,EsxiHost7,IpV4,Password@12345,FALSE
+SerialNumber,InstallTarget,IpConfigType,IpAddress,NetMask/Prefix,Gateway,NameServer,HostName,IpConfigurationType,Password,IsPasswordEnCrypted,NetworkDevice,Vlanid
+XXXXXXXXX1,,Static,10.10.10.10,255.255.255.0,10.10.10.1,10.10.10.4,EsxiHost1,IpV4,Password@12345,FALSE,vmnic0,22
+XXXXXXXXX2,,Static,10.10.10.11,255.255.255.0,10.10.10.1,10.10.10.4,EsxiHost2,IpV4,Password@12345,FALSE,,
+XXXXXXXXX3,,Static,10.10.10.12,255.255.255.0,10.10.10.1,10.10.10.4,EsxiHost3,IpV4,Password@12345,FALSE,vmnic1,192
+XXXXXXXXX4,,Static,10.10.10.13,255.255.255.0,10.10.10.1,10.10.10.4,EsxiHost4,IpV4,Password@12345,FALSE,,
+XXXXXXXXX5,,Static,10.10.10.14,255.255.255.0,10.10.10.1,10.10.10.4,EsxiHost5,IpV4,Password@12345,FALSE,,
+XXXXXXXXX6,,Static,10.10.10.15,255.255.255.0,10.10.10.1,10.10.10.4,EsxiHost6,IpV4,Password@12345,FALSE,,
+XXXXXXXXX7,,Static,10.10.10.16,255.255.255.0,10.10.10.1,10.10.10.4,EsxiHost7,IpV4,Password@12345,FALSE,,
