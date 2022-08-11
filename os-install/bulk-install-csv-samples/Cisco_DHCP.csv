@@ -1,5 +1,5 @@
-OsImageName,ScuImageName,ConfigurationSource,InstallMethod,InstallTargetType
-esxi70,scu612d,Cisco,vMedia,MRAID VD
+OsImageName,ScuImageName,ConfigurationSource,InstallMethod,InstallTargetType,OverrideSecureBoot
+esxi70,scu612d,Cisco,vMedia,MRAID VD,true
 SerialNumber,InstallTarget,IpConfigType,HostName,Password,IsPasswordEnCrypted,IpConfigurationType,NetworkDevice,Vlanid
 XXXXXXXXX1,,DHCP,EsxiHost1,Password@12345,FALSE,IpV6,vmnic1,23
 XXXXXXXXX2,,DHCP,EsxiHost2,Password@12345,FALSE,IpV6,vmnic2,45
