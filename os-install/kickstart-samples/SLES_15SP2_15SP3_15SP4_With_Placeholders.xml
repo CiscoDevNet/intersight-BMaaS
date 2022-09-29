@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<profile
+    xmlns="http://www.suse.com/1.0/yast2ns"
+    xmlns:config="http://www.suse.com/1.0/configns">
+    <add-on>
+        <add_on_products config:type="list">
+            <listentry>
+                <media_url>
+                    <![CDATA[dvd:///?devices=/dev/sr0%2C/dev/sr1%2C/dev/sr2]]>
+                </media_url>
+                <product_dir>/Module-Basesystem</product_dir>
+                <product>sle-module-basesystem</product>
+            </listentry>
+        </add_on_products>
+    </add-on>
+    <bootloader>
+        <global>
+            <activate>true</activate>
+        </global>
+        <loader_device>DISK_NAME_PLACEHOLDER</loader_device>
+        <loader_type>default</loader_type>
+    </bootloader>
+    <general>
+        <mode>
+            <confirm config:type="boolean">false</confirm>
+            <second_stage config:type="boolean">false</second_stage>
+        </mode>
+    </general>
+    <language>
+        <language>en_US</language>
+    </language>
+    <keyboard>
+        <keyboard_values>
+            <capslock config:type="boolean">false</capslock>
+            <delay/>
+            <discaps config:type="boolean">false</discaps>
+            <numlock/>
+            <rate/>
+            <scrlock config:type="boolean">false</scrlock>
+            <tty>tty1 tty2 tty3 tty4 tty5 tty6 tty8 tty9 tty10 tty11 tty12 tty13 tty14 tty15 tty16 tty17 tty18 tty19 tty20</tty>
+        </keyboard_values>
+        <keymap>us</keymap>
+    </keyboard>
+    <networking>
+        <ipv6 config:type="boolean">false</ipv6>
+        <keep_install_network config:type="boolean">true</keep_install_network>
+        <dns>
+            <dhcp_hostname config:type="boolean">false</dhcp_hostname>
+            <hostname>{{ .Hostname }}</hostname>
+            <nameservers config:type="list">
+                <nameserver>{{ .NameServer }}</nameserver>
+            </nameservers>
+        </dns>
+        <interfaces config:type="list">
+            <interface>
+                <name>{{.NetworkDevice}}</name>
+                <bootproto>static</bootproto>
+                <ipaddr>{{.IpAddress}}/24</ipaddr>
+                <startmode>auto</startmode>
+            </interface>
+        </interfaces>
+        <routing>
+            <ipv4_forward config:type="boolean">false</ipv4_forward>
+            <ipv6_forward config:type="boolean">false</ipv6_forward>
+            <routes config:type="list">
+                <route>
+                    <destination>default</destination>
+                    <device>{{.NetworkDevice}}</device>
+                    <gateway>{{ .Gateway }}</gateway>
+                </route>
+            </routes>
+        </routing>
+        <!-- https://documentation.suse.com/sles/15-SP2/html/SLES-all/cha-configuration-installation-options.html#CreateProfile-Network-names -->
+        <net-udev config:type="list">
+            <rule>
+            <name>{{.NetworkDevice}}</name>
+            <rule>ATTR{address}</rule>
+            <value>{{.MACAddress}}</value>
+        </rule>
+        </net-udev>
+    </networking>
+    <partitioning config:type="list">
+        <drive>
+            <device>DISK_NAME_PLACEHOLDER</device>
+            <initialize config:type="boolean">true</initialize>
+            <partitions config:type="list">
+                <partition>
+                    <create config:type="boolean">true</create>
+                    <format config:type="boolean">true</format>
+                    <partition_nr config:type="integer">1</partition_nr>
+                    <mount>/boot/efi</mount>
+                    <filesystem config:type="symbol">vfat</filesystem>
+                    <size>auto</size>
+                </partition>
+                <partition>
+                    <create config:type="boolean">true</create>
+                    <format config:type="boolean">true</format>
+                    <partition_nr config:type="integer">2</partition_nr>
+                    <mount>/</mount>
+                    <filesystem config:type="symbol">btrfs</filesystem>
+                    <size>max</size>
+                </partition>
+            </partitions>
+            <use>all</use>
+        </drive>
+    </partitioning>
+    <scripts>
+        <chroot-scripts config:type="list">
+            <script>
+                <debug config:type="boolean">true</debug>
+                <feedback config:type="boolean">false</feedback>
+                <filename>chroot.sh</filename>
+                <interpreter>shell</interpreter>
+                <source>
+                    <![CDATA[
+#!/bin/sh
+OS_INSTALL_COMPLETED_STATUS_PLACEHOLDER
+]]>
+                </source>
+            </script>
+        </chroot-scripts>
+        <post-scripts config:type="list">
+            <script>
+                <debug config:type="boolean">true</debug>
+                <feedback config:type="boolean">false</feedback>
+                <filename>install.sh</filename>
+                <interpreter>shell</interpreter>
+                <source>
+                    <![CDATA[
+#!/bin/sh
+
+]]>
+                </source>
+            </script>
+        </post-scripts>
+    </scripts>
+    <software>
+        <products config:type="list">
+            <product>SLES</product>
+        </products>
+        <packages config:type="list">
+            <package>zypper</package>
+            <package>openssh</package>
+            <package>sles-release</package>
+        </packages>
+        <patterns config:type="list">
+            <pattern>base</pattern>
+            <pattern>minimal</pattern>
+            <pattern>netconfig</pattern>
+            <pattern>iscsi</pattern>
+        </patterns>
+        <post-patterns config:type="list">
+            <pattern>apparmor</pattern>
+        </post-patterns>
+	</software>
+    <timezone>
+        <hwclock>localtime</hwclock>
+        <timezone>America/Boise</timezone>
+    </timezone>
+    <users config:type="list">
+        <user>
+            <username>root</username>
+            <user_password>{{ .secure.RootPassword }}</user_password>
+            <encrypted config:type="boolean">false</encrypted>
+        </user>
+    </users>
+</profile>
