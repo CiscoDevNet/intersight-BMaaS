@@ -1,4 +1,0 @@
-OsImageName,ScuImageName,ConfigurationSource,ConfigurationFileName,InstallMethod,InstallTargetType,,,,,,,,
-ESXi7U3,LB_SCU,Cisco,,vMedia,iSCSI LUN,,,,,,,,
-SerialNumber,InstallTarget,IpConfigType,IpAddress,NetMask/Prefix,Gateway,NameServer,HostName,IpConfigurationType,Password,ProductKey,VnicMac,TargetIqn,LunId
-WZP2526000F,ISCSI,Static,10.10.10.10,255.255.255.0,10.10.10.1,64.104.128.236,EsxiHost1,IpV4,Nbv@12345,,D0:E0:42:53:AD:F0,iqn.1992-08.com.netapp:sn.1917336447,0
