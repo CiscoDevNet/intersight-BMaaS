@@ -1,4 +1,0 @@
-OsImageName,ScuImageName,ConfigurationSource,ConfigurationFileName,InstallMethod,InstallTargetType,,,,,,,,
-JOHN_ESXi_702,John_KBMR2_FC,Cisco,,vMedia,Fibre Channel LUN,,,,,,,,
-SerialNumber,InstallTarget,IpConfigType,IpAddress,NetMask/Prefix,Gateway,NameServer,HostName,IpConfigurationType,Password,ProductKey,InitiatorWwpn,TargetWwpn,LunId
-WZP22430CUJ,FibreChannel,Static,10.10.10.10,255.255.255.0,10.10.10.1,64.104.128.236,EsxiHost1,IpV4,Nbv@12345,,20:00:D4:C9:3C:53:2A:D2,20:01:d0:39:ea:17:12:9b,0
