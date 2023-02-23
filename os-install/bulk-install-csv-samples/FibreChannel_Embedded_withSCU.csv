@@ -1,0 +1,4 @@
+OsImageName,ScuImageName,ConfigurationSource,InstallMethod,InstallTargetType
+ESXi7U3,SCU_622A,Embedded,vMedia,Fibre Channel LUN
+SerialNumber,InstallTarget,InitiatorWwpn,TargetWwpn,LunId
+XXXXXXXXX1,FibreChannel,20:00:D4:C9:3C:53:2A:D2,20:01:d0:39:ea:17:12:9b,0

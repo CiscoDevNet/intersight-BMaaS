@@ -1,0 +1,4 @@
+OsImageName,ScuImageName,ConfigurationSource,InstallMethod,InstallTargetType,OverrideSecureBoot,,,,,,
+ESXi7U3,SCU_622A,Cisco,vMedia,Fibre Channel LUN,TRUE,,,,,,
+SerialNumber,InstallTarget,IpConfigType,HostName,Password,IsPasswordEnCrypted,IpConfigurationType,NetworkDevice,Vlanid,InitiatorWwpn,TargetWwpn,LunId
+XXXXXXXXX1,FibreChannel,DHCP,EsxiHost1,Nbv@12345,FALSE,IpV4,vmnic0,1,20:00:BC:4A:56:F4:8E:51,20:0A:D0:39:EA:1E:72:5F,0

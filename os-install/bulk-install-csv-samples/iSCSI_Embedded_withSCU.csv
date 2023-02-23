@@ -1,0 +1,4 @@
+OsImageName,ScuImageName,ConfigurationSource,ConfigurationFileName,InstallMethod,InstallTargetType
+ESXi7U3,SCU_622A,Embedded,esxi_custom.cfg,vMedia,iSCSI LUN
+SerialNumber,InstallTarget,VnicMac,TargetIqn,LunId,
+XXXXXXXXX1,ISCSI,E8:EB:34:68:58:AC,iqn.1992-08.com.netapp:sn.1917336447,0,

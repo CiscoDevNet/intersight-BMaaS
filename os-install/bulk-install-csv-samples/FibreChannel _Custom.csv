@@ -1,0 +1,4 @@
+OsImageName,WindowsEdition,ScuImageName,ConfigurationSource,ConfigurationFileName,InstallMethod,InstallTargetType,
+Windows 2022,Standard,SCU_622A,Custom,Win2022PH.xml,vMedia,Fibre Channel LUN,
+SerialNumber,InstallTarget,IpAddress,NetMask/Prefix,Gateway,InitiatorWwpn,TargetWwpn,LunId
+XXXXXXXXX1,FibreChannel,10.10.10.10,255.255.255.0,10.10.10.1,20:00:D4:C9:3C:53:2A:D2,20:01:d0:39:ea:17:12:9b,0
