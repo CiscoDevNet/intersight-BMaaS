@@ -1,5 +1,5 @@
 OsImageName,ScuImageName,ConfigurationSource,InstallMethod,InstallTargetType,,,,,,,,,,,
 ESXi7U3,SCU_622A,Cisco,vMedia,Fibre Channel LUN,,,,,,,,,,,
 SerialNumber,InstallTarget,IpConfigType,IpAddress,NetMask/Prefix,Gateway,NameServer,HostName,IpConfigurationType,Password,IsPasswordEnCrypted,NetworkDevice,Vlanid,InitiatorWwpn,TargetWwpn,LunId
-XXXXXXXXX1,FibreChannel,Static,10.10.10.10,255.255.255.0,10.10.10.1,64.104.128.236,EsxiHost1,IpV4,Nbv@12345,FALSE,vmnic0,1,20:00:D4:C9:3C:53:2A:D2,20:01:d0:39:ea:17:12:9b,0
-XXXXXXXXX2,FibreChannel,Static,10.10.10.10,255.255.255.0,10.10.10.1,64.104.128.236,EsxiHost1,IpV4,Nbv@12345,FALSE,,,20:00:D4:C9:3C:53:2A:D2,20:01:d0:39:ea:17:12:9b,0
+XXXXXXXXX1,FibreChannel,Static,10.10.10.10,255.255.255.0,10.10.10.1,10.10.10.17,EsxiHost1,IpV4,Password@12345,FALSE,vmnic0,1,AA:AA:AA:DD:DD:DD:DD:DD,AA:AA:AA:AA:BB:BB:BB:BB,0
+XXXXXXXXX2,FibreChannel,Static,10.10.10.10,255.255.255.0,10.10.10.1,10.10.10.17,EsxiHost2,IpV4,Password@12345,FALSE,,,AA:AA:AA:BB:BB:BB:BB:BB,AA:AA:AA:AA:BB:BB:BB:BB,0
