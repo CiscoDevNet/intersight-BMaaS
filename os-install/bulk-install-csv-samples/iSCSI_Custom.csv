@@ -1,4 +1,4 @@
 OsImageName,WindowsEdition,ScuImageName,ConfigurationSource,ConfigurationFileName,InstallMethod,InstallTargetType,,,
 Windows 2022,Standard,SCU_622A,Custom,Win2022PH.xml,vMedia,iSCSI LUN,,,
 SerialNumber,InstallTarget,IpAddress,NetMask/Prefix,Gateway,NameServer,HostName,VnicMac,TargetIqn,LunId
-XXXXXXXXX1,ISCSI,10.10.10.10,255.255.255.0,10.10.10.1,10.11.12.12,testesxi,E8:EB:34:68:58:AC,iqn.1992-08.com.netapp:sn.1917336447,0
+XXXXXXXXX1,ISCSI,10.10.10.10,255.255.255.0,10.10.10.1,10.11.12.12,testesxi,AA:BB:CC:DD:EE:AA,iqn.1992-08.com.abcedef:sn.123456,0
