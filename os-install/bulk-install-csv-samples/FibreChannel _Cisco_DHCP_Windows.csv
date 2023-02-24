@@ -1,4 +1,4 @@
 OsImageName,WindowsEdition,ScuImageName,ConfigurationSource,InstallMethod,InstallTargetType,,,,,,
 Windows 2022,Standard,SCU_622A,Cisco,vMedia,Fibre Channel LUN,,,,,,
 SerialNumber,InstallTarget,IpConfigType,HostName,Password,IsPasswordEnCrypted,IpConfigurationType,ProductKey,NetworkDevice,InitiatorWwpn,TargetWwpn,LunId
-XXXXXXXXX1,FibreChannel,DHCP,EsxiHost1,Nbv@12345,FALSE,IpV4,XXXXX-XXXXX-XXXXX-XXXXX-XXXXX,aa-66-5a-46-5d-d6,20:00:BC:4A:56:F4:8E:51,20:0A:D0:39:EA:1E:72:5F,0
+XXXXXXXXX1,FibreChannel,DHCP,EsxiHost1,Password@12345,FALSE,IpV4,XXXXX-XXXXX-XXXXX-XXXXX-XXXXX,aa-66-5a-46-5d-d6,AA:BB:CC:DD:AA:BB:CC:DD,AA:BB:CC:DD:EE:AA:AA:AA,0
