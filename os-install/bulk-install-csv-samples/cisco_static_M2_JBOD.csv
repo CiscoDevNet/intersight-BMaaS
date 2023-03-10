@@ -1,0 +1,4 @@
+OsImageName,ScuImageName,ConfigurationSource,InstallMethod,InstallTargetType,,,,,,
+ESXI7U3,SCU_LB_006,Cisco,vMedia,M.2 JBOD,,,,,,
+SerialNumber,InstallTarget,IpConfigType,IpAddress,NetMask/Prefix,Gateway,NameServer,HostName,IpConfigurationType,Password,IsPasswordEnCrypted
+XXXXXXXXX1,MSTOR-RAID:YYYYYYYY,Static,10.10.10.10,255.255.255.0,10.10.10.1,10.10.10.4,EsxiHost1,IpV4,Password@12345,FALSE
