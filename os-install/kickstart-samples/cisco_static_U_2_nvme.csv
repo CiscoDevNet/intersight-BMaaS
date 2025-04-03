@@ -1,0 +1,10 @@
+OsImageName,ScuImageName,ConfigurationSource,InstallMethod,InstallTargetType,,,,,,,
+Esxi8u3,LBMR3,Cisco,vMedia,FRONT NVME,,,,,,,
+SerialNumber,InstallTarget,IpConfigType,IpAddress,NetMask/Prefix,Gateway,NameServer,AlternateNameServers,HostName,IpConfigurationType,Password,IsPasswordEnCrypted
+XXXXXXXXXX,NVMe-direct-U.2-drives:aaaaaaaaa,Static,10.10.10.10,255.255.255.0,10.10.10.1,20.20.20.20,30.30.30.30,osinstall.cisco.com,IpV4,Password@12345,FALSE
+XXXXXXXXXY,NVMe-direct-U.2-drives:aaaaaaaab,Static,10.10.10.11,255.255.255.0,10.10.10.1,20.20.20.20,30.30.30.30,osinstall.cisco.com,IpV4,Password@12345,FALSE
+XXXXXXXXXZ,NVMe-direct-U.2-drives:aaaaaaaac,Static,10.10.10.12,255.255.255.0,10.10.10.1,20.20.20.20,30.30.30.30,osinstall.cisco.com,IpV4,Password@12345,FALSE
+XXXXXXXXXA,NVMe-direct-U.2-drives:aaaaaaaad,Static,10.10.10.13,255.255.255.0,10.10.10.1,20.20.20.20,30.30.30.30,osinstall.cisco.com,IpV4,Password@12345,FALSE
+XXXXXXXXXB,NVMe-direct-U.2-drives:aaaaaaaae,Static,10.10.10.14,255.255.255.0,10.10.10.1,20.20.20.20,30.30.30.30,osinstall.cisco.com,IpV4,Password@12345,FALSE
+XXXXXXXXXC,NVMe-direct-U.2-drives:aaaaaaaaf,Static,10.10.10.15,255.255.255.0,10.10.10.1,20.20.20.20,30.30.30.30,osinstall.cisco.com,IpV4,Password@12345,FALSE
+XXXXXXXXXD,NVMe-direct-U.2-drives:aaaaaaaag,Static,10.10.10.16,255.255.255.0,10.10.10.1,20.20.20.20,30.30.30.30,osinstall.cisco.com,IpV4,Password@12345,FALSE
