@@ -1,0 +1,93 @@
+{
+  "product": {
+    "id": "SLES"
+  },
+  "hostname": {
+    "static": "sles"
+  },
+  "localization": {
+    "language": "en_US",
+    "keyboard": "us",
+    "timezone": "America/Boise"
+  },
+  "root": {
+    "hashedPassword": true,
+    "password": "*************"
+  },
+  "network": {
+    "connections": [
+      {
+        "id": "eth0",
+        "interface": "eth0",
+        "method4": "manual",
+		"addresses": ["10.10.10.10/24"],
+		"gateway4": "10.10.10.1",
+		"nameservers": ["11.12.13.14", "15.16.17.18"],
+        "autoconnect": true
+      }
+    ]
+  },
+  "legacyAutoyastStorage": [
+    {
+      "device": "DISK_NAME_PLACEHOLDER",
+      "initialize": true,
+      "use": "all",
+      "partitions": [
+        {
+          "create": true,
+          "format": true,
+          "partition_nr": 1,
+          "mount": "/boot/efi",
+          "filesystem": "vfat",
+          "size": "auto"
+        },
+        {
+          "create": true,
+          "format": true,
+          "partition_nr": 2,
+          "mount": "/",
+          "filesystem": "btrfs",
+          "size": "max"
+        }
+      ]
+    }
+  ],
+  "software": {
+    "extraRepositories": [
+	{
+		"alias": "basesystem",
+		"url": "dvd:/?devices=/dev/sr0%2C/dev/sr1%2C/dev/sr2",
+		"productDir": "/Module-Basesystem"
+	}
+    ],
+    "packages": [
+      "grub2",
+      "glibc",
+      "openssh"
+    ],
+    "patterns": [
+      "base",
+      "documentation"
+    ]
+  },
+  "scripts": {
+    "pre": [
+      {
+        "name": "precopy-ucscfg.sh",
+        "content": "#!/bin/sh\nset -ux\n\nDISK_REF=\"DISK_NAME_PLACEHOLDER\"\nNODE=\"$(readlink -f \"$DISK_REF\" || true)\"\n[ -n \"$NODE\" ] || NODE=\"$DISK_REF\"\n\nTYPE=\"$(lsblk -nro TYPE \"$NODE\" 2>/dev/null | head -n1 || true)\"\nif [ \"$TYPE\" = \"disk\" ]; then\n  SRC_PART=\"$(lsblk -nrpo PATH,TYPE \"$NODE\" | awk '$2==\"part\"{print $1; exit}')\"\nelse\n  SRC_PART=\"$NODE\"\nfi\n\nmkdir -p /tmp/scu_src /tmp\nif ! mount -o ro \"$SRC_PART\" /tmp/scu_src; then\n  echo \"CRITICAL: Failed to mount $SRC_PART\"\n  exit 1\nfi\n\necho \"Copying files from source media...\"\n\ncp -f /tmp/scu_src/tmp/ucscfg /tmp/ucscfg 2>/dev/null || \\\ncp -f /tmp/scu_src/ucscfg /tmp/ucscfg 2>/dev/null || \\\necho \"ucscfg not found, skipping\"\n\ncp -f /tmp/scu_src/sles_post_script.sh /sles_post_script.sh 2>/dev/null || \\\ncp -f /tmp/scu_src/tmp/sles_post_script.sh /sles_post_script.sh 2>/dev/null || \\\necho \"sles_post_script.sh not found, skipping\"\n\ncp -f /tmp/scu_src/tmp/sles_nwconfig.sh /tmp/sles_nwconfig.sh 2>/dev/null || \\\ncp -f /tmp/scu_src/sles_nwconfig.sh /tmp/sles_nwconfig.sh 2>/dev/null || \\\necho \"sles_nwconfig.sh not found, skipping\"\n\ncp -f /tmp/scu_src/tmp/adapterList /tmp/adapterList 2>/dev/null || \\\ncp -f /tmp/scu_src/adapterList /tmp/adapterList 2>/dev/null || \\\necho \"adapterList not found, skipping\"\n\nif [ -d /tmp/scu_src/update ]; then\n  cp -rf /tmp/scu_src/update /update && echo \"update folder copied\"\nelif [ -d /tmp/scu_src/tmp/update ]; then\n  cp -rf /tmp/scu_src/tmp/update /update && echo \"update folder copied\"\nelse\n  echo \"update folder not found, skipping\"\nfi\n\numount /tmp/scu_src\n\nchmod 755 /tmp/ucscfg 2>/dev/null || true\nchmod 755 /sles_post_script.sh 2>/dev/null || true\nchmod 755 /tmp/sles_nwconfig.sh 2>/dev/null || true\nchmod 644 /tmp/adapterList 2>/dev/null || true\n[ -d /update ] && chmod -R 755 /update 2>/dev/null || true\n\necho \"Precopy script completed successfully\"\n"
+      }
+    ],
+    "post": [
+      {
+        "name": "install.sh",
+        "chroot": false,
+        "content": "#!/bin/sh\nset -x\nexec > /tmp/install_debug.log 2>&1\n\necho \"=== INSTALL.SH STARTED ===\"\ndate\necho \"Current directory: $(pwd)\"\necho \"Current user: $(whoami)\"\n\necho \"\\n=== CHECKING SOURCE FILES ===\"\nls -la /tmp/ | grep -E '(ucscfg|sles|adapter)' || echo \"No matching files in /tmp\"\nls -la / | grep -E '(sles|ucscfg|update)' || echo \"No matching files in /\"\n\necho \"\\n=== MOUNT INFORMATION ===\"\nmount | grep -v tmpfs\n\necho \"\\n=== LOOKING FOR TARGET ROOT ===\"\nfor POSSIBLE_ROOT in /mnt /target /a /tmp/root /install; do\n  echo \"Checking: $POSSIBLE_ROOT\"\n  if [ -d \"$POSSIBLE_ROOT\" ]; then\n    echo \"  Directory exists\"\n    ls -la \"$POSSIBLE_ROOT\" | head -10\n    if mountpoint -q \"$POSSIBLE_ROOT\" 2>/dev/null; then\n      echo \"  *** IS A MOUNTPOINT ***\"\n      TARGET_ROOT=\"$POSSIBLE_ROOT\"\n      break\n    fi\n  fi\ndone\n\nif [ -z \"$TARGET_ROOT\" ]; then\n  echo \"\\n=== NO MOUNTPOINT FOUND, CHECKING FOR MOUNTED FILESYSTEMS ===\"\n  mount | grep -E '(ext4|xfs|btrfs)' | grep -v '(loop|tmpfs)'\n  TARGET_ROOT=$(mount | grep -E 'on /mnt' | head -1 | awk '{print $3}')\n  echo \"Extracted from mount: $TARGET_ROOT\"\nfi\n\nTARGET_ROOT=\"${TARGET_ROOT:-/mnt}\"\necho \"\\n=== USING TARGET_ROOT: $TARGET_ROOT ===\"\n\necho \"\\n=== CREATING TARGET DIRECTORIES ===\"\nmkdir -pv \"${TARGET_ROOT}/tmp\"\nls -lad \"${TARGET_ROOT}/tmp\"\n\necho \"\\n=== COPYING FILES ===\"\n\nif [ -f /tmp/ucscfg ]; then\n  echo \"Copying /tmp/ucscfg...\"\n  cp -fv /tmp/ucscfg \"${TARGET_ROOT}/tmp/ucscfg\" && chmod -v 777 \"${TARGET_ROOT}/tmp/ucscfg\"\n  ls -la \"${TARGET_ROOT}/tmp/ucscfg\"\nelse\n  echo \"NOTICE: /tmp/ucscfg NOT FOUND (skipping)\"\nfi\n\nif [ -f /sles_post_script.sh ]; then\n  echo \"Copying /sles_post_script.sh...\"\n  cp -fv /sles_post_script.sh \"${TARGET_ROOT}/sles_post_script.sh\" && chmod -v 755 \"${TARGET_ROOT}/sles_post_script.sh\"\n  ls -la \"${TARGET_ROOT}/sles_post_script.sh\"\nelse\n  echo \"NOTICE: /sles_post_script.sh NOT FOUND (skipping)\"\nfi\n\nif [ -f /tmp/sles_nwconfig.sh ]; then\n  echo \"Copying /tmp/sles_nwconfig.sh...\"\n  cp -fv /tmp/sles_nwconfig.sh \"${TARGET_ROOT}/tmp/sles_nwconfig.sh\" && chmod -v 755 \"${TARGET_ROOT}/tmp/sles_nwconfig.sh\"\n  ls -la \"${TARGET_ROOT}/tmp/sles_nwconfig.sh\"\nelse\n  echo \"NOTICE: /tmp/sles_nwconfig.sh NOT FOUND (skipping)\"\nfi\n\nif [ -f /tmp/adapterList ]; then\n  echo \"Copying /tmp/adapterList...\"\n  cp -fv /tmp/adapterList \"${TARGET_ROOT}/tmp/adapterList\" && chmod -v 644 \"${TARGET_ROOT}/tmp/adapterList\"\n  ls -la \"${TARGET_ROOT}/tmp/adapterList\"\nelse\n  echo \"NOTICE: /tmp/adapterList NOT FOUND (skipping)\"\nfi\n\nif [ -d /update ]; then\n  echo \"Copying /update folder...\"\n  cp -rfv /update \"${TARGET_ROOT}/update\" && chmod -Rv 755 \"${TARGET_ROOT}/update\"\n  echo \"Contents of ${TARGET_ROOT}/update:\"\n  ls -la \"${TARGET_ROOT}/update\" | head -20\nelse\n  echo \"NOTICE: /update folder NOT FOUND (skipping)\"\nfi\n\n[ -f /tmp/nslist ] && cp -fv /tmp/nslist \"${TARGET_ROOT}/tmp/nslist\" || true\n[ -f /tmp/routes_list ] && cp -fv /tmp/routes_list \"${TARGET_ROOT}/tmp/routes_list\" || true\n\necho \"\\n=== FINAL VERIFICATION ===\"\necho \"Contents of ${TARGET_ROOT}/tmp:\"\nls -la \"${TARGET_ROOT}/tmp/\" || echo \"Cannot list ${TARGET_ROOT}/tmp\"\n\necho \"Contents of ${TARGET_ROOT} root:\"\nls -la \"${TARGET_ROOT}/\" | head -20\n\necho \"\\n=== INSTALL.SH COMPLETED SUCCESSFULLY ===\"\ndate\n\ncp -f /tmp/install_debug.log \"${TARGET_ROOT}/tmp/install_debug.log\" 2>/dev/null || true\n"
+      },
+      {
+        "name": "chroot.sh",
+        "chroot": true,
+        "content": "#!/bin/sh\nset -x\nexec > /tmp/chroot_debug.log 2>&1\n\necho \"=== CHROOT SCRIPT STARTED ===\"\ndate\necho \"Current directory: $(pwd)\"\necho \"Current user: $(whoami)\"\n\necho \"\\n=== CHECKING FOR FILES IN CHROOT ===\"\nls -la /tmp/ | grep -E '(ucscfg|sles|adapter)' || echo \"No matching files in /tmp\"\nls -la / | grep -E '(ucscfg|sles|update)' || echo \"No matching files in /\"\n\necho \"\\n=== LOOKING FOR INSTALLER FILESYSTEM ===\"\nfor INSTALLER_PATH in /mnt/install /install /installer /media; do\n  if [ -d \"$INSTALLER_PATH/tmp\" ]; then\n    echo \"Found installer at: $INSTALLER_PATH\"\n    ls -la \"$INSTALLER_PATH/tmp/\" | grep -E '(ucscfg|sles|adapter)' || true\n    ls -la \"$INSTALLER_PATH/\" | grep -E '(sles|update)' || true\n\n    [ -f \"$INSTALLER_PATH/tmp/ucscfg\" ] && cp -fv \"$INSTALLER_PATH/tmp/ucscfg\" /tmp/ucscfg && chmod 777 /tmp/ucscfg || true\n    [ -f \"$INSTALLER_PATH/tmp/sles_nwconfig.sh\" ] && cp -fv \"$INSTALLER_PATH/tmp/sles_nwconfig.sh\" /tmp/sles_nwconfig.sh && chmod 755 /tmp/sles_nwconfig.sh || true\n    [ -f \"$INSTALLER_PATH/sles_post_script.sh\" ] && cp -fv \"$INSTALLER_PATH/sles_post_script.sh\" /sles_post_script.sh && chmod 755 /sles_post_script.sh || true\n    [ -f \"$INSTALLER_PATH/tmp/adapterList\" ] && cp -fv \"$INSTALLER_PATH/tmp/adapterList\" /tmp/adapterList && chmod 644 /tmp/adapterList || true\n\n    if [ -d \"$INSTALLER_PATH/update\" ] && [ ! -d /update ]; then\n      echo \"Copying update folder from installer...\"\n      cp -rfv \"$INSTALLER_PATH/update\" /update && chmod -R 755 /update || echo \"Failed to copy update folder\"\n    fi\n  fi\ndone\n\necho \"\\n=== FILES AFTER COPY ATTEMPT ===\"\nls -la /tmp/ | grep -E '(ucscfg|sles|adapter)' || echo \"No matching files in /tmp\"\nls -la / | grep -E '(sles|update)' || echo \"No matching files in /\"\nif [ -d /update ]; then\n  echo \"Update folder contents:\"\n  ls -la /update | head -10\nelse\n  echo \"No update folder present\"\nfi\n\npost_rc=0\nnw_rc=0\n\necho \"\\n=== EXECUTING SLES POST SCRIPT ===\"\nif [ -f /sles_post_script.sh ]; then\n  chmod +x /sles_post_script.sh\n  /sles_post_script.sh\n  post_rc=$?\n  if [ \"$post_rc\" -ne 0 ]; then\n    echo \"sles_post_script failed with code $post_rc\" >> /tmp/ucscfg_status.log\n  fi\nelse\n  echo \"NOTICE: /sles_post_script.sh not found (skipping)\" >> /tmp/ucscfg_status.log\nfi\n\necho \"\\n=== EXECUTING SLES NETWORK CONFIG ===\"\nif [ -f /tmp/sles_nwconfig.sh ]; then\n  chmod +x /tmp/sles_nwconfig.sh\n  /tmp/sles_nwconfig.sh\n  nw_rc=$?\n  if [ \"$nw_rc\" -ne 0 ]; then\n    echo \"sles_nwconfig failed with code $nw_rc\" >> /tmp/ucscfg_status.log\n  fi\nelse\n  echo \"NOTICE: /tmp/sles_nwconfig.sh not found (skipping)\" >> /tmp/ucscfg_status.log\nfi\n\necho \"\\n=== CONFIGURING NETWORK ===\"\nns_list=$(cat /tmp/nslist 2>/dev/null || true)\nfor word in $ns_list; do\n  echo \"nameserver $word\" >> /etc/resolv.conf\ndone\nif [ -f /tmp/routes_list ]; then\n  while IFS= read -r line; do\n    echo \"$line\" >> /etc/sysconfig/network/routes\n  done < /tmp/routes_list\nelse\n  echo \"NOTICE: /tmp/routes_list not found (skipping route configuration)\"\nfi\n\nif [ \"$post_rc\" -ne 0 ] || [ \"$nw_rc\" -ne 0 ]; then\n  echo \"One or more post-install scripts failed (post_rc=$post_rc, nw_rc=$nw_rc)\" >> /tmp/ucscfg_status.log\n  exit 1\nfi\n\nchmod 777 /tmp/ucscfg\necho 'OS INSTALL COMPLETED' >> /tmp/status\n/tmp/ucscfg os-completed-status '/tmp/status'\n\n\necho \"\\n=== CHROOT SCRIPT COMPLETED SUCCESSFULLY ===\"\ndate\n"
+      }
+    ]
+  }
+}
